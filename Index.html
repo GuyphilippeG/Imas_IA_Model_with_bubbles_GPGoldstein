@@ -1,0 +1,815 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Le modèle d'Imas étendu — De la crise de demande à la bulle spéculative</title>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/katex.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/KaTeX/0.16.9/contrib/auto-render.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,300;0,400;0,600;0,700;1,400&family=Source+Sans+3:wght@400;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+  :root {
+    --bg: #faf8f5;
+    --text: #1a1a1a;
+    --accent: #b45309;
+    --accent-light: #fef3c7;
+    --blue: #1e40af;
+    --blue-light: #dbeafe;
+    --green: #166534;
+    --green-light: #dcfce7;
+    --red: #991b1b;
+    --red-light: #fee2e2;
+    --gray: #6b7280;
+    --border: #e5e2dc;
+    --eq-bg: #f5f3ef;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Source Serif 4', Georgia, serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.75;
+    font-size: 17px;
+    max-width: 820px;
+    margin: 0 auto;
+    padding: 3rem 2rem 6rem;
+  }
+
+  h1 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 2.1rem;
+    font-weight: 700;
+    line-height: 1.25;
+    margin-bottom: 0.5rem;
+    color: var(--text);
+  }
+
+  .subtitle {
+    font-size: 1.05rem;
+    color: var(--gray);
+    margin-bottom: 2.5rem;
+    font-style: italic;
+  }
+
+  h2 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+    color: var(--accent);
+    border-bottom: 2px solid var(--accent);
+    padding-bottom: 0.3rem;
+  }
+
+  h3 {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 1.15rem;
+    font-weight: 700;
+    margin-top: 2rem;
+    margin-bottom: 0.75rem;
+    color: var(--text);
+  }
+
+  p { margin-bottom: 1rem; }
+
+  .equation-block {
+    background: var(--eq-bg);
+    border-left: 4px solid var(--accent);
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    border-radius: 0 6px 6px 0;
+    overflow-x: auto;
+  }
+
+  .equation-block .eq-label {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: var(--accent);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.5rem;
+  }
+
+  .equation-block.blue {
+    border-left-color: var(--blue);
+    background: var(--blue-light);
+  }
+  .equation-block.blue .eq-label { color: var(--blue); }
+
+  .equation-block.green {
+    border-left-color: var(--green);
+    background: var(--green-light);
+  }
+  .equation-block.green .eq-label { color: var(--green); }
+
+  .equation-block.red {
+    border-left-color: var(--red);
+    background: var(--red-light);
+  }
+  .equation-block.red .eq-label { color: var(--red); }
+
+  .numeric-box {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+  }
+
+  .numeric-box .box-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 0.6rem;
+  }
+
+  .numeric-box table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.95rem;
+  }
+
+  .numeric-box th {
+    font-family: 'Source Sans 3', sans-serif;
+    text-align: left;
+    padding: 0.4rem 0.6rem;
+    border-bottom: 2px solid var(--border);
+    font-weight: 600;
+    color: var(--gray);
+  }
+
+  .numeric-box td {
+    padding: 0.4rem 0.6rem;
+    border-bottom: 1px solid #f0ede8;
+  }
+
+  .numeric-box tr:last-child td { border-bottom: none; }
+
+  .highlight-result {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--red);
+  }
+
+  .highlight-green {
+    font-family: 'JetBrains Mono', monospace;
+    font-weight: 500;
+    color: var(--green);
+  }
+
+  .insight-box {
+    background: var(--accent-light);
+    border: 1px solid #fbbf24;
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .insight-box .insight-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 0.9rem;
+    color: var(--accent);
+    margin-bottom: 0.4rem;
+  }
+
+  .toc {
+    background: #fff;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 1.5rem 2rem;
+    margin: 1.5rem 0 2.5rem;
+  }
+
+  .toc-title {
+    font-family: 'Source Sans 3', sans-serif;
+    font-weight: 700;
+    font-size: 1rem;
+    margin-bottom: 0.7rem;
+  }
+
+  .toc ol { padding-left: 1.2rem; }
+  .toc li {
+    font-size: 0.95rem;
+    margin-bottom: 0.3rem;
+    font-family: 'Source Sans 3', sans-serif;
+  }
+
+  .toc a {
+    color: var(--blue);
+    text-decoration: none;
+  }
+
+  .toc a:hover { text-decoration: underline; }
+
+  .katex-display { margin: 0.5rem 0; }
+
+  .step { counter-increment: step-counter; }
+  .step::before {
+    content: "Étape " counter(step-counter) " → ";
+    font-weight: 600;
+    color: var(--accent);
+  }
+
+  em { font-style: italic; }
+  strong { font-weight: 600; }
+
+  .analogy {
+    color: var(--blue);
+    font-style: italic;
+  }
+
+  .part-divider {
+    text-align: center;
+    margin: 3rem 0;
+    font-size: 1.5rem;
+    color: var(--border);
+    letter-spacing: 1rem;
+  }
+</style>
+</head>
+<body>
+
+<h1>Le modèle d'Imas étendu : de la crise de demande à la bulle spéculative</h1>
+<p class="subtitle">Un guide pas à pas pour étudiants de première année — avec toutes les équations, des exemples chiffrés, et l'extension vers le scénario de type 1929</p>
+
+<div class="toc">
+  <div class="toc-title">Sommaire</div>
+  <ol>
+    <li><a href="#part1">Le modèle d'Imas : deux types d'agents, un multiplicateur qui s'effondre</a></li>
+    <li><a href="#part2">L'équation des profits de Kalecki</a></li>
+    <li><a href="#part3">Caballero-Farhi-Gourinchas : la pénurie d'actifs sûrs</a></li>
+    <li><a href="#part4">Schularick-Taylor : le crédit comme prédicteur de crise</a></li>
+    <li><a href="#part5">L'extension bulle-krach : quand le scénario modéré devient le plus dangereux</a></li>
+  </ol>
+</div>
+
+<!-- ============================================================ -->
+<h2 id="part1">Partie I — Le modèle d'Imas : comment l'IA peut faire baisser le PIB malgré une productivité en hausse</h2>
+
+<h3>L'intuition de départ — expliquée simplement</h3>
+
+<p>Imaginons une économie très simple. Il y a deux types de personnes : les <strong>travailleurs</strong> et les <strong>propriétaires du capital</strong> (ceux qui possèdent les machines, les logiciels, les brevets). Quand un travailleur gagne 100 €, il en dépense environ 90 € en courses, loyer, sorties, vêtements. Les 10 € restants sont épargnés. Quand un propriétaire du capital gagne 100 €, il n'en dépense que 20 € — le reste est épargné ou investi dans des actifs financiers. Il est déjà riche, il a déjà tout ce dont il a besoin au quotidien.</p>
+
+<p class="analogy">Analogie : c'est comme si l'économie était un circuit d'eau. Les travailleurs sont des tuyaux larges — l'argent coule vite à travers eux et revient dans le circuit. Les propriétaires sont des réservoirs — l'argent y entre et y reste en grande partie.</p>
+
+<p>Si l'IA remplace massivement le travail humain, les revenus se déplacent des travailleurs (qui dépensent beaucoup) vers les propriétaires (qui dépensent peu). Résultat : moins d'argent circule dans l'économie. La demande totale chute. Et comme les entreprises ne produisent que ce qu'elles peuvent vendre, le PIB réel baisse — même si les machines pourraient produire beaucoup plus.</p>
+
+<h3>Les paramètres de base</h3>
+
+<p>Imas utilise un concept central de la macroéconomie : la <strong>propension marginale à consommer</strong> (PMC, ou MPC en anglais). C'est la fraction de chaque euro supplémentaire de revenu qu'une personne dépense.</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 1 — Hiérarchie des propensions marginales à consommer</div>
+  $$0 \leq \kappa_{1,O} \ll \kappa_{1,Z} \leq 1$$
+</div>
+
+<p>En mots : la PMC des propriétaires (\(\kappa_{1,O}\)) est très inférieure à celle des travailleurs (\(\kappa_{1,Z}\)). Les études empiriques, notamment celles de Mian, Straub et Sufi (<em>Quarterly Journal of Economics</em>, 2021), estiment que les ménages du décile inférieur de revenus ont une PMC d'environ 0.90 tandis que ceux du décile supérieur ont une PMC d'environ 0.20. Imas retient ces valeurs :</p>
+
+<div class="numeric-box">
+  <div class="box-title">Valeurs numériques retenues par Imas</div>
+  <table>
+    <tr><th>Paramètre</th><th>Symbole</th><th>Valeur</th><th>Source empirique</th></tr>
+    <tr><td>PMC des travailleurs</td><td>\(\kappa_{1,Z}\)</td><td><span class="highlight-green">0.90</span></td><td>Mian-Straub-Sufi (2021), Johnson-Parker-Souleles (2006)</td></tr>
+    <tr><td>PMC des propriétaires</td><td>\(\kappa_{1,O}\)</td><td><span class="highlight-green">0.20</span></td><td>Carroll et al. (2017), estimation décile supérieur</td></tr>
+    <tr><td>Part du travail (avant IA)</td><td>\(s_L\)</td><td><span class="highlight-green">0.60</span></td><td>BLS, FRED — moyenne historique US 1950–2020</td></tr>
+    <tr><td>Consommation de base (avant IA)</td><td>\(\kappa_0\)</td><td><span class="highlight-green">38</span></td><td>Calibrage pour PIB = 100</td></tr>
+  </table>
+</div>
+
+<h3>La fonction de production CES — ce que l'économie <em>pourrait</em> produire</h3>
+
+<p>Du côté de l'offre, Imas utilise une fonction de production CES (à élasticité de substitution constante), qui décrit combien de biens et services l'économie peut théoriquement fabriquer avec une quantité donnée de travail (\(\ell\)) et de capital (\(k\)) :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 2 — Fonction de production CES</div>
+  $$Y^{\text{potentiel}} = A\left[\alpha \, \ell^{\,\frac{\eta-1}{\eta}} + (1-\alpha)\, k^{\,\frac{\eta-1}{\eta}}\right]^{\frac{\eta}{\eta-1}}$$
+</div>
+
+<p>Où : <strong>A</strong> = productivité globale (le « niveau technologique »), <strong>α</strong> = poids du travail dans la production (plus α est élevé, plus l'économie dépend du travail humain), <strong>η</strong> = élasticité de substitution entre travail et capital (si η > 1, les machines remplacent facilement les humains), <strong>ℓ</strong> = quantité de travail, <strong>k</strong> = quantité de capital.</p>
+
+<p>Quand l'IA arrive, elle fait exploser A (productivité) et effondrer α (le poids du travail). Les machines font ce que les humains faisaient. Le PIB <em>potentiel</em> monte en flèche. Mais ce n'est que ce que l'économie <em>pourrait</em> produire. Ce qu'elle produit <em>réellement</em> dépend de la demande.</p>
+
+<h3>Le théorème de Hulten — pourquoi les optimistes ont (partiellement) raison</h3>
+
+<p>Avant de montrer pourquoi ça peut mal tourner, Imas explique pourquoi beaucoup d'économistes prédisent un boom. Le <strong>théorème de Hulten</strong> (1978) dit que le gain de PIB provenant de l'amélioration d'un facteur de production est proportionnel à la part de ce facteur dans les coûts totaux. Si le travail représente 60 % du PIB et que l'IA réduit le coût du travail de moitié, le gain potentiel est de 60 % × 50 % = 30 % du PIB. Ce théorème est vrai — mais seulement si toute la production supplémentaire trouve des acheteurs. C'est précisément ce qu'Imas conteste.</p>
+
+<h3>La contrainte de satiété — les humains ne veulent pas tout en quantité infinie</h3>
+
+<p>Voici l'hypothèse clé d'Imas, celle qui fait basculer le modèle. Quand les prix baissent vers zéro grâce à l'IA, est-ce que les gens achètent infiniment plus ? Non. Il y a un plafond de consommation. On ne peut pas manger 1 000 repas par jour, ni regarder 500 heures de films. Imas formalise cette idée :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 3 — Contrainte de satiété</div>
+  $$\text{Quand le prix } P \text{ baisse vers zéro, la consommation maximale reste bornée :}$$
+  $$\lim_{P \to 0^{+}} \bar{c}(P) = \bar{c} \;<\; \infty$$
+</div>
+
+<p>En mots : même si les biens deviennent quasi-gratuits, il existe une quantité maximale finie \(\bar{c}\) que les consommateurs désirent. Au-delà, ils sont « rassasiés » — des unités supplémentaires n'ajoutent plus rien à leur bien-être.</p>
+
+<p class="analogy">Exemple historique concret : le prix de l'éclairage artificiel a été divisé par 40 000 entre 1800 et les années 1990 (Nordhaus, 1996). Pourtant, nous ne consommons pas 40 000 fois plus de lumière. Nous avons atteint un niveau de satiété pour l'éclairage. Le même raisonnement s'applique à beaucoup de biens quand l'IA fait chuter les prix.</p>
+
+<h3>La consommation agrégée et le multiplicateur keynésien</h3>
+
+<p>On peut maintenant écrire la consommation totale de l'économie. Elle a deux composantes : une partie « de base » qui dépend des prix (les achats que tout le monde fait, même avec peu de revenus), et une partie proportionnelle au revenu, pondérée par les PMC respectives :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 4 — Consommation agrégée</div>
+  $$C = \kappa_0(P) + \Big[\kappa_{1,Z} \cdot s_L \;+\; \kappa_{1,O} \cdot (1 - s_L)\Big] \cdot Y$$
+</div>
+
+<p>Le terme entre crochets est la <strong>propension marginale à consommer agrégée</strong> (PMCA) :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 4bis — PMCA</div>
+  $$\text{PMCA}(s_L) = \kappa_{1,O} + (\kappa_{1,Z} - \kappa_{1,O}) \cdot s_L$$
+</div>
+
+<p>Décomposons cette formule. La PMCA est une <strong>moyenne pondérée</strong> des deux PMC, où le poids est la part du travail \(s_L\). Si \(s_L = 1\) (tout le revenu va aux travailleurs), la PMCA = \(\kappa_{1,Z}\) = 0.90. Si \(s_L = 0\) (tout va aux propriétaires), la PMCA = \(\kappa_{1,O}\) = 0.20. Plus l'IA déplace le revenu des travailleurs vers les propriétaires, plus la PMCA baisse.</p>
+
+<p>En économie, le <strong>multiplicateur keynésien</strong> nous dit combien de PIB est généré par chaque euro de dépense autonome. Si Y = C (équilibre simplifié sans investissement ni État), on obtient :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 5 — Multiplicateur keynésien et PIB d'équilibre</div>
+  $$Y^* = \frac{\kappa_0(P)}{1 - \text{PMCA}(s_L)}$$
+</div>
+
+<p class="analogy">Analogie : le multiplicateur, c'est comme un écho. Vous criez « 100 € » dans un canyon. Le premier écho renvoie 62 € (car PMCA = 0.62), le deuxième 62 % × 62 € = 38.44 €, etc. La somme totale de tous les échos est 100/(1−0.62) = 263 €. Si la PMCA baisse à 0.24, chaque écho est plus faible, et la somme totale tombe à 100/(1−0.24) = 132 €. Même cri de départ, mais beaucoup moins d'écho.</p>
+
+<h3>La condition d'effondrement de la demande</h3>
+
+<p>L'IA fait deux choses en même temps : elle baisse les prix P (ce qui augmente \(\kappa_0\), la consommation de base — mais seulement jusqu'au plafond de satiété \(\bar{c}\)), et elle réduit \(s_L\) (la part du travail, ce qui fait baisser la PMCA et donc le multiplicateur). Le PIB baisse si le multiplicateur se contracte <em>plus vite</em> que la consommation de base ne peut augmenter :</p>
+
+<div class="equation-block red">
+  <div class="eq-label">Équation 6 — Condition de baisse du PIB après l'IA</div>
+  $$Y' < Y \quad \Longleftrightarrow \quad \frac{\kappa_0(P')}{\kappa_0(P)} \;<\; \frac{1 - \text{PMCA}(s_L')}{1 - \text{PMCA}(s_L)}$$
+</div>
+
+<p>En mots : le PIB post-IA (\(Y'\)) est inférieur au PIB pré-IA (\(Y\)) si et seulement si le ratio de la consommation de base (côté gauche) est inférieur au ratio des « fuites » du multiplicateur (côté droit). Le côté gauche mesure combien la baisse des prix stimule la consommation de base. Le côté droit mesure combien le déplacement du revenu vers les propriétaires réduit la recirculation de l'argent dans l'économie.</p>
+
+<h3>L'exemple numérique complet d'Imas — scénario extrême</h3>
+
+<div class="numeric-box">
+  <div class="box-title">Calcul pas à pas — Avant l'IA</div>
+  <table>
+    <tr><td>Part du travail</td><td>\(s_L = 0.60\)</td></tr>
+    <tr><td>PMCA</td><td>\(0.20 + 0.70 \times 0.60 = 0.20 + 0.42 = \) <span class="highlight-green">0.62</span></td></tr>
+    <tr><td>Multiplicateur</td><td>\(\frac{1}{1 - 0.62} = \frac{1}{0.38} = \) <span class="highlight-green">2.63</span></td></tr>
+    <tr><td>Consommation de base</td><td>\(\kappa_0 = 38\)</td></tr>
+    <tr><td>PIB d'équilibre</td><td>\(Y = 38 \times 2.63 = \) <span class="highlight-green">100</span></td></tr>
+  </table>
+</div>
+
+<div class="numeric-box">
+  <div class="box-title">Calcul pas à pas — Après l'IA (scénario extrême d'Imas)</div>
+  <table>
+    <tr><td>Part du travail effondrée</td><td>\(s_L' = 0.05\)</td></tr>
+    <tr><td>PMCA post-IA</td><td>\(0.20 + 0.70 \times 0.05 = 0.20 + 0.035 = \) <span class="highlight-result">0.235</span></td></tr>
+    <tr><td>Nouveau multiplicateur</td><td>\(\frac{1}{1 - 0.235} = \frac{1}{0.765} = \) <span class="highlight-result">1.307</span></td></tr>
+    <tr><td>Consommation de base (prix -30%, satiété)</td><td>\(\kappa_0(P') \approx 40\)</td></tr>
+    <tr><td>PIB post-IA</td><td>\(Y' = 40 \times 1.307 = \) <span class="highlight-result">52.3</span></td></tr>
+    <tr><td><strong>Variation du PIB</strong></td><td><span class="highlight-result"><strong>−47.7 %</strong></span></td></tr>
+  </table>
+</div>
+
+<p>Vérifions l'équation 6 : côté gauche = \(40/38 = 1.053\). Côté droit = \(0.765/0.38 = 2.013\). Comme \(1.053 < 2.013\), la condition est remplie : le PIB baisse.</p>
+
+<div class="insight-box">
+  <div class="insight-title">L'intuition en une phrase</div>
+  <p>Les prix ne peuvent baisser que de 5.3 % en termes de stimulus sur la consommation de base (à cause de la satiété), mais le multiplicateur s'effondre de 101 %. L'économie peut produire énormément plus, mais personne n'achète.</p>
+</div>
+
+<h3>L'extension « Piège à stagnation » — avec l'investissement</h3>
+
+<p>Dans le monde réel, le PIB ne se résume pas à la consommation. Il y a aussi l'investissement (les entreprises qui achètent des machines, construisent des usines). En ajoutant l'investissement I :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 7 — PIB avec investissement</div>
+  $$Y = \frac{\kappa_0(P) + I}{1 - \text{PMCA}(s_L)}$$
+</div>
+
+<p>Quand l'IA transfère le revenu des travailleurs vers les propriétaires, ceux-ci épargnent massivement. L'épargne totale augmente. Pour que cette épargne soit absorbée, l'investissement doit augmenter — ce qui nécessite que les taux d'intérêt baissent suffisamment pour rendre de nouveaux projets rentables. Mais si les taux ne peuvent pas baisser assez (par exemple parce qu'ils sont déjà proches de zéro — c'est la « borne zéro des taux » ou ZLB), l'épargne excédentaire n'est pas absorbée, l'investissement stagne, et le PIB reste déprimé.</p>
+
+<p>Imas calcule que dans son scénario extrême, maintenir le PIB à 100 après l'IA nécessiterait que l'investissement passe de 15 % à plus de 50 % du PIB — un niveau jamais atteint dans aucune économie développée. Le PIB chute donc vers environ 37, pire encore que dans le modèle sans investissement, à cause d'un <strong>spirale multiplicateur-accélérateur</strong> : moins de demande → moins d'investissement → capital qui s'use sans être remplacé → encore moins de production → encore moins de demande.</p>
+
+<!-- ============================================================ -->
+<div class="part-divider">• • •</div>
+
+<h2 id="part2">Partie II — L'équation des profits de Kalecki : « Les capitalistes gagnent ce qu'ils dépensent »</h2>
+
+<h3>L'idée fondamentale</h3>
+
+<p>Michał Kalecki, un économiste polonais, a découvert dans les années 1930 (indépendamment de Keynes) une identité comptable profonde : <strong>les profits agrégés des entreprises ne dépendent pas de leur efficacité ou de leur talent, mais de leurs propres décisions de dépense</strong>. C'est contraire à l'intuition — on pense que les profits viennent des ventes aux consommateurs. Mais au niveau de l'économie entière, c'est une identité comptable incontournable.</p>
+
+<h3>Dérivation pas à pas</h3>
+
+<p>On part des deux façons de mesurer le PIB :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Identité du PIB — côté dépenses</div>
+  $$Y = C + I + G + (X - M)$$
+</div>
+
+<p>Où C = consommation, I = investissement, G = dépenses publiques, X = exportations, M = importations.</p>
+
+<div class="equation-block">
+  <div class="eq-label">Identité du PIB — côté revenus</div>
+  $$Y = W + P + T$$
+</div>
+
+<p>Où W = salaires totaux, P = profits totaux, T = impôts nets.</p>
+
+<p>On décompose la consommation en deux : \(C = C_w + C_p\), où \(C_w\) = consommation des travailleurs et \(C_p\) = consommation des capitalistes. On définit l'épargne des travailleurs : \(S_w = W - C_w\), donc \(C_w = W - S_w\).</p>
+
+<p>On égalise les deux expressions du PIB :</p>
+
+$$W + P + T = (W - S_w) + C_p + I + G + (X - M)$$
+
+<p>Les W s'annulent des deux côtés. On réarrange :</p>
+
+<div class="equation-block blue">
+  <div class="eq-label">Équation de Kalecki — Version complète (économie ouverte avec État)</div>
+  $$\boxed{P = I + C_p - S_w + (G - T) + (X - M)}$$
+</div>
+
+<p>Décomposons chaque terme :</p>
+
+<div class="numeric-box">
+  <div class="box-title">Ce que chaque terme signifie</div>
+  <table>
+    <tr><th>Terme</th><th>Effet sur P</th><th>Pourquoi</th></tr>
+    <tr><td>\(I\) — Investissement</td><td>+</td><td>L'investissement crée des revenus (salaires de construction, ventes de machines) qui deviennent du chiffre d'affaires pour d'autres entreprises, donc des profits, sans être une charge courante pour l'investisseur (c'est capitalisé au bilan)</td></tr>
+    <tr><td>\(C_p\) — Consommation des capitalistes</td><td>+</td><td>Quand un riche achète un yacht, c'est du revenu pour le constructeur naval — donc du profit quelque part</td></tr>
+    <tr><td>\(S_w\) — Épargne des travailleurs</td><td>−</td><td>Les salaires sont un coût pour les entreprises. Si les travailleurs épargnent au lieu de dépenser, ces salaires ne reviennent pas comme chiffre d'affaires</td></tr>
+    <tr><td>\(G - T\) — Déficit public</td><td>+</td><td>Un déficit injecte plus d'argent dans l'économie qu'il n'en retire par les impôts</td></tr>
+    <tr><td>\(X - M\) — Excédent commercial</td><td>+</td><td>Les exportations créent des revenus domestiques sans créer de production domestique vendue localement</td></tr>
+  </table>
+</div>
+
+<p>Si on ajoute une fonction de consommation capitaliste \(C_p = A + q \cdot P\) (où \(q\) est la PMC des capitalistes sur leurs propres profits), on obtient un <strong>multiplicateur de profits</strong> :</p>
+
+<div class="equation-block blue">
+  <div class="eq-label">Multiplicateur de profits de Kalecki</div>
+  $$P = \frac{I + A - S_w + (G-T) + (X-M)}{1 - q}$$
+</div>
+
+<h3>Exemple numérique — calibré sur les États-Unis</h3>
+
+<div class="numeric-box">
+  <div class="box-title">Application numérique — Données US approximatives (2019, en trillions $)</div>
+  <table>
+    <tr><td>Investissement privé (I)</td><td>3.6</td></tr>
+    <tr><td>Consommation capitaliste autonome (A)</td><td>0.5</td></tr>
+    <tr><td>Épargne des travailleurs (\(S_w\))</td><td>0.8</td></tr>
+    <tr><td>Déficit public (G − T)</td><td>1.0</td></tr>
+    <tr><td>Déficit commercial (X − M)</td><td>−0.6</td></tr>
+    <tr><td>PMC capitaliste sur profits (q)</td><td>0.20</td></tr>
+    <tr><td><strong>Profits agrégés</strong></td><td>\(\frac{3.6 + 0.5 - 0.8 + 1.0 - 0.6}{1 - 0.20} = \frac{3.7}{0.80} = \) <span class="highlight-green">4.625 T$</span></td></tr>
+  </table>
+</div>
+
+<div class="insight-box">
+  <div class="insight-title">Le lien avec Imas</div>
+  <p>L'équation de Kalecki et le modèle d'Imas sont deux faces de la même pièce. Imas montre que le PIB agrégé dépend du multiplicateur keynésien, qui dépend de la PMCA, qui dépend de \(s_L\). Kalecki montre que les <strong>profits</strong> dépendent des dépenses des capitalistes et de l'investissement. Si l'IA augmente massivement les profits (car elle remplace le travail) mais que les capitalistes n'augmentent pas proportionnellement leur consommation ni leur investissement, alors les profits excédentaires deviennent de l'<strong>épargne excédentaire</strong> — qui doit aller quelque part. C'est le chaînon vers la Partie III.</p>
+</div>
+
+<!-- ============================================================ -->
+<div class="part-divider">• • •</div>
+
+<h2 id="part3">Partie III — Caballero-Farhi-Gourinchas : la pénurie d'actifs sûrs</h2>
+
+<h3>Le problème : trop d'épargne, pas assez d'endroits sûrs où la placer</h3>
+
+<p>Caballero, Farhi et Gourinchas (Ricardo Caballero au MIT, Emmanuel Farhi à Harvard, Pierre-Olivier Gourinchas au FMI) ont publié en 2008 dans l'<em>American Economic Review</em> un modèle qui explique un paradoxe : comment se fait-il que les taux d'intérêt mondiaux baissent alors que la croissance mondiale reste forte ? Leur réponse : les pays en croissance rapide (Chine, pays émergents) produisent beaucoup d'épargne mais peu d'<strong>actifs financiers fiables</strong> où la placer. Cette épargne inonde alors les pays développés (surtout les États-Unis), faisant baisser les taux.</p>
+
+<h3>Le modèle : économie en temps continu avec générations chevauchantes</h3>
+
+<p>Dans leur modèle, chaque agent vit de façon continue mais peut « mourir » à chaque instant avec une probabilité \(\theta\) (et un nouvel agent naît pour le remplacer). Chaque agent naît sans richesse et épargne progressivement. La production à chaque instant est \(X_t\), qui croît au taux \(g\). Seule une fraction \(\delta\) de cette production peut être « capitalisée » — transformée en actifs financiers que les épargnants peuvent détenir. \(\delta\) mesure le <strong>développement financier</strong> du pays.</p>
+
+<p>L'actif disponible dans l'économie est un « arbre » (au sens de l'économie financière de Lucas) qui produit des fruits \(\delta X_t\) à chaque instant. La valeur de cet arbre est :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 8 — Valeur des actifs financiers (l'arbre de Lucas)</div>
+  $$V_t = \frac{\delta \, X_t}{r - g + \theta}$$
+</div>
+
+<p>Où \(r\) = taux d'intérêt réel, \(g\) = taux de croissance de la production, \(\theta\) = taux de rotation démographique. Cette formule ressemble à celle d'un prix d'action : la valeur est le flux de dividendes (\(\delta X_t\)) divisé par le « taux d'actualisation net de la croissance » (\(r - g + \theta\)).</p>
+
+<p>La richesse totale des agents (leur épargne accumulée) est :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 9 — Richesse agrégée</div>
+  $$W_t = \frac{X_t}{\theta}$$
+</div>
+
+<p>L'<strong>équilibre du marché des actifs</strong> exige que l'épargne totale soit égale à la valeur totale des actifs disponibles :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 10 — Équilibre du marché des actifs</div>
+  $$W_t = V_t \quad\Longleftrightarrow\quad \frac{X_t}{\theta} = \frac{\delta \, X_t}{r - g + \theta}$$
+</div>
+
+<p>On simplifie par \(X_t\) (qui est positif) et on résout pour \(r\) :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 11 — Taux d'intérêt d'équilibre en économie fermée</div>
+  $$\boxed{r = g + \delta\,\theta}$$
+</div>
+
+<p>C'est une équation remarquablement simple. Elle dit que le taux d'intérêt réel égale le taux de croissance <em>plus</em> un terme qui dépend du développement financier (\(\delta\)) et du taux de rotation démographique (\(\theta\)). Si \(\delta\) est élevé (pays financièrement développé), il y a beaucoup d'actifs disponibles, les épargnants n'ont pas besoin de se battre pour les obtenir, et le taux d'intérêt reste confortablement au-dessus de \(g\). Si \(\delta\) est faible (pays émergent), les actifs sont rares, les épargnants acceptent des rendements très bas pour placer leur argent, et \(r\) se rapproche de \(g\).</p>
+
+<h3>Le cas asymétrique : quand l'épargne des pays émergents inonde les marchés</h3>
+
+<p>Dans un monde à deux régions — les États-Unis (« U », \(\delta^U\) élevé) et les pays émergents (« R », \(\delta^R\) faible, croissance \(g^R\) rapide) — le taux d'intérêt mondial converge vers :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 12 — Taux d'intérêt mondial avec déséquilibres</div>
+  $$r_{\infty} = g + \delta^R\,\theta$$
+</div>
+
+<p>Quand \(\delta^R \to 0\) (développement financier quasi nul dans les émergents) : \(r_{\infty} \to g\). Le taux d'intérêt mondial tombe au niveau du taux de croissance. L'épargne du monde entier se déverse sur les quelques actifs sûrs disponibles (bons du Trésor américain, immobilier des pays développés), poussant leurs prix à la hausse et leurs rendements à la baisse.</p>
+
+<h3>Le « piège à sécurité » (Safety Trap) — Caballero et Farhi (2018)</h3>
+
+<p>Dans un article de 2018 (<em>Review of Economic Studies</em>), Caballero et Farhi ajoutent un ingrédient : tous les épargnants ne sont pas identiques face au risque. Une fraction \(\alpha\) est composée d'agents « knightiens » — infiniment averses au risque — qui n'acceptent de détenir <em>que</em> des actifs sûrs (obligations d'État, dépôts garantis). L'autre fraction \((1-\alpha)\) est composée d'agents « neutres » au risque. De plus, seule une fraction \(\rho\) de la valeur des actifs risqués peut être transformée en actifs sûrs (via la titrisation, les garanties étatiques, etc.).</p>
+
+<p>La <strong>condition de pénurie d'actifs sûrs</strong> est :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 13 — Condition de pénurie d'actifs sûrs</div>
+  $$\alpha > \rho \, \mu^{-}$$
+</div>
+
+<p>Où \(\mu^{-}\) est la valeur des actifs en état de récession. Si la demande d'actifs sûrs (\(\alpha\)) dépasse l'offre (\(\rho\mu^{-}\)), le taux d'intérêt sûr naturel \(\bar{r}^s\) devient <em>négatif</em>. Mais les taux nominaux ne peuvent pas descendre en dessous de zéro (c'est la « borne zéro des taux » ou ZLB). L'économie est alors piégée : elle ne peut pas atteindre le plein emploi parce que le taux d'intérêt est trop élevé par rapport à ce que l'équilibre demanderait.</p>
+
+<p>Dans le piège à sécurité, la production est déterminée par l'offre d'actifs sûrs :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 14 — Production dans le piège à sécurité</div>
+  $$y = \frac{s}{\psi_y} < \bar{y}$$
+</div>
+
+<p>Où \(s\) = offre d'actifs sûrs et \(\psi_y\) = sensibilité de la demande d'actifs sûrs au niveau de production. Moins il y a d'actifs sûrs, plus la production est déprimée.</p>
+
+<h3>Exemple numérique</h3>
+
+<div class="numeric-box">
+  <div class="box-title">Application numérique — Taux d'intérêt mondial</div>
+  <table>
+    <tr><td>Croissance mondiale (\(g\))</td><td>3 %</td></tr>
+    <tr><td>Développement financier émergents (\(\delta^R\))</td><td>0.10</td></tr>
+    <tr><td>Taux de rotation (\(\theta\))</td><td>0.05</td></tr>
+    <tr><td>Taux d'équilibre fermé US</td><td>\(r = 0.03 + 0.80 \times 0.05 =\) <span class="highlight-green">7.0 %</span></td></tr>
+    <tr><td>Taux d'équilibre mondial asymétrique</td><td>\(r_\infty = 0.03 + 0.10 \times 0.05 =\) <span class="highlight-result">3.5 %</span></td></tr>
+    <tr><td>Si \(\delta^R \to 0\)</td><td>\(r_\infty \to\) <span class="highlight-result">3.0 %</span> (= \(g\))</td></tr>
+  </table>
+</div>
+
+<div class="insight-box">
+  <div class="insight-title">Le lien avec Imas et Kalecki</div>
+  <p>Le « piège à stagnation » d'Imas est exactement le piège à sécurité de Caballero-Farhi appliqué au contexte de l'IA. Quand l'IA transfère les revenus vers les propriétaires du capital (Imas), ceux-ci génèrent une épargne excédentaire massive (Kalecki : les profits montent mais la consommation capitaliste ne suit pas). Cette épargne excédentaire cherche des actifs sûrs — mais il n'y en a pas assez (Caballero-Farhi). Le taux d'intérêt naturel tombe sous zéro, et la production est piégée en dessous de son potentiel.</p>
+</div>
+
+<!-- ============================================================ -->
+<div class="part-divider">• • •</div>
+
+<h2 id="part4">Partie IV — Schularick-Taylor : ce qui arrive quand l'épargne excédentaire passe par le crédit</h2>
+
+<h3>La question empirique</h3>
+
+<p>Schularick et Taylor (<em>American Economic Review</em>, 2012) ont posé une question simple mais puissante : sur 140 ans de données pour 14 pays développés, <strong>quel indicateur prédit le mieux les crises financières ?</strong></p>
+
+<h3>La méthode : régression logit sur panel</h3>
+
+<p>Leur variable dépendante est binaire : 1 si une crise bancaire majeure éclate dans le pays \(i\) l'année \(t\), 0 sinon. Ils ont identifié <strong>79 crises majeures</strong> entre 1870 et 2008. Leur spécification :</p>
+
+<div class="equation-block">
+  <div class="eq-label">Équation 15 — Modèle logit de Schularick-Taylor</div>
+  $$\text{logit}\big(\Pr[\text{crise}_{it}=1]\big) = b_{0i} + \sum_{j=1}^{5} b_{1j}\,\Delta\!\log\,\text{CREDIT}_{it-j} + \mathbf{b}_2'\,\mathbf{X}_{it} + \varepsilon_{it}$$
+</div>
+
+<p>Où \(b_{0i}\) = effet fixe pays (chaque pays a son propre « niveau de base » de risque), \(\Delta\!\log\,\text{CREDIT}_{it-j}\) = croissance réelle du crédit les années \(t-1\) à \(t-5\) (5 retards), \(\mathbf{X}_{it}\) = variables de contrôle optionnelles (croissance du PIB, inflation, taux d'intérêt, investissement).</p>
+
+<h3>Les résultats clés</h3>
+
+<div class="numeric-box">
+  <div class="box-title">Résultats principaux de Schularick-Taylor (2012)</div>
+  <table>
+    <tr><th>Indicateur</th><th>Valeur</th><th>Signification</th></tr>
+    <tr><td>Somme des coefficients de crédit</td><td><span class="highlight-result">10.02</span></td><td>Significatif à 1 % (écart-type ≈ 3.24)</td></tr>
+    <tr><td>Coefficient dominant (2e retard)</td><td><span class="highlight-result">7.215</span></td><td>La croissance du crédit il y a 2 ans est le signal le plus fort</td></tr>
+    <tr><td>AUROC</td><td><span class="highlight-result">0.697</span></td><td>Bien au-dessus du hasard (0.50); significatif</td></tr>
+    <tr><td>Somme des effets marginaux</td><td>0.301</td><td>+1 écart-type de croissance du crédit sur 5 ans → +2.1 points de probabilité de crise</td></tr>
+    <tr><td>Fréquence de base des crises</td><td>~4 %</td><td>Le +2.1 pp représente un >50 % d'augmentation du risque relatif</td></tr>
+  </table>
+</div>
+
+<p>Le résultat le plus frappant : <strong>la croissance de la masse monétaire ne prédit plus rien après 1945</strong> — seul le crédit bancaire reste prédictif. C'est la naissance de ce que Schularick et Taylor appellent l'ère du « capitalisme de crédit » (par opposition au « capitalisme monétaire » d'avant-guerre).</p>
+
+<h3>L'extension de Jordà-Schularick-Taylor (2015) : toutes les bulles ne se valent pas</h3>
+
+<p>Jordà, Schularick et Taylor (<em>Journal of Monetary Economics</em>, 2015) ont étendu l'analyse à <strong>17 pays sur 1870–2013</strong>, en distinguant les bulles immobilières des bulles boursières, et les bulles financées par le crédit de celles qui ne le sont pas.</p>
+
+<p>Leur identification des bulles utilise deux critères simultanés : le log du prix réel de l'actif dépasse d'au moins 1 écart-type la tendance filtrée par Hodrick-Prescott, <em>et</em> une baisse d'au moins 15 % du prix survient dans les 3 années suivantes.</p>
+
+<div class="numeric-box">
+  <div class="box-title">Pertes cumulées de production sur 5 ans selon le type de bulle</div>
+  <table>
+    <tr><th>Type de bulle</th><th>Perte cumulée (pp de PIB)</th><th>Commentaire</th></tr>
+    <tr><td>Bulle immobilière + crédit</td><td><span class="highlight-result">−28.95</span></td><td>La plus destructrice — de loin</td></tr>
+    <tr><td>Bulle boursière + crédit</td><td><span class="highlight-result">−14.50</span></td><td>Sérieuse mais moitié moins</td></tr>
+    <tr><td>Bulle immobilière sans crédit</td><td>~−8</td><td>Manageable</td></tr>
+    <tr><td>Bulle boursière sans crédit</td><td>~−4</td><td>Relativement bénigne</td></tr>
+  </table>
+</div>
+
+<div class="insight-box">
+  <div class="insight-title">La leçon clé</div>
+  <p>Ce n'est pas la bulle elle-même qui est dangereuse — c'est la bulle financée par le crédit. L'épargne excédentaire (Kalecki, Caballero-Farhi) n'est qu'une condition nécessaire. La condition suffisante est que cette épargne passe par le système de crédit et génère de l'effet de levier. C'est la différence entre un bidon d'essence (l'épargne excédentaire) et un incendie (la crise financière) : il faut l'allumette du crédit.</p>
+</div>
+
+<!-- ============================================================ -->
+<div class="part-divider">• • •</div>
+
+<h2 id="part5">Partie V — L'extension bulle-krach : quand le scénario modéré d'Imas devient le plus dangereux</h2>
+
+<h3>Le paradoxe central : pourquoi le scénario extrême n'est PAS le pire</h3>
+
+<p>Imas rejette son propre scénario extrême (\(s_L\) de 0.60 à 0.05) comme irréaliste, et il a raison. Mais voici le paradoxe : un scénario <strong>modéré</strong> — la part du travail tombant de 0.60 à 0.42, comparable à ce qui s'est passé dans les années 1920 et à ce que projette le rapport Citrini (56 % → 46 %) — est potentiellement <em>plus</em> dangereux, précisément parce qu'il ne déclenche pas de signal d'alarme visible.</p>
+
+<h3>Étape 1 — Recalculer Imas avec la paramétrisation modérée</h3>
+
+<div class="numeric-box">
+  <div class="box-title">Calcul pas à pas — Paramétrisation modérée (type 1920s / Citrini)</div>
+  <table>
+    <tr><td>Part du travail post-IA</td><td>\(s_L' = 0.42\)</td></tr>
+    <tr><td>PMCA post-IA</td><td>\(0.20 + 0.70 \times 0.42 = 0.20 + 0.294 = \) <span class="highlight-result">0.494</span></td></tr>
+    <tr><td>Nouveau multiplicateur</td><td>\(\frac{1}{1 - 0.494} = \frac{1}{0.506} = \) <span class="highlight-result">1.976</span></td></tr>
+    <tr><td>Consommation de base (prix -15%)</td><td>\(\kappa_0(P') \approx 39\)</td></tr>
+    <tr><td>PIB post-IA (sans bulle)</td><td>\(Y' = 39 \times 1.976 = \) <span class="highlight-result">77.1</span></td></tr>
+    <tr><td>Variation du PIB</td><td><span class="highlight-result">−22.9 %</span></td></tr>
+  </table>
+</div>
+
+<p>Vérification de l'équation 6 : côté gauche = \(39/38 = 1.026\). Côté droit = \(0.506/0.38 = 1.332\). Comme \(1.026 < 1.332\), le PIB baisse — mais « seulement » de 23 %, pas de 48 %. Le problème est sérieux mais pas catastrophique. Pas de panique visible. Pas de réponse politique d'urgence.</p>
+
+<h3>Étape 2 — L'épargne excédentaire via Kalecki</h3>
+
+<p>Calculons maintenant ce qui se passe du côté de l'épargne. Les propriétaires du capital captent une part croissante du revenu national, mais n'en dépensent que 20 %. Le reste s'accumule.</p>
+
+<div class="equation-block blue">
+  <div class="eq-label">Équation 16 — Épargne excédentaire des propriétaires</div>
+  $$S_{\text{excédentaire}} = (1 - s_L') \times Y' \times (1 - \kappa_{1,O})$$
+</div>
+
+<div class="numeric-box">
+  <div class="box-title">Calcul de l'épargne excédentaire — Avant vs Après IA</div>
+  <table>
+    <tr><th></th><th>Avant IA</th><th>Après IA (modéré)</th></tr>
+    <tr><td>Revenu des propriétaires</td><td>\((1-0.60) \times 100 = 40\)</td><td>\((1-0.42) \times 77.1 = 44.7\)</td></tr>
+    <tr><td>Épargne des propriétaires</td><td>\(40 \times 0.80 = \) <span class="highlight-green">32</span></td><td>\(44.7 \times 0.80 = \) <span class="highlight-result">35.8</span></td></tr>
+    <tr><td>Épargne en % du PIB</td><td>\(32/100 = \) <span class="highlight-green">32 %</span></td><td>\(35.8/77.1 = \) <span class="highlight-result">46.4 %</span></td></tr>
+  </table>
+</div>
+
+<p>L'épargne des propriétaires passe de 32 % à 46.4 % du PIB. C'est une augmentation de <strong>14.4 points de pourcentage</strong> de l'épargne en proportion du PIB. Cet argent doit aller quelque part.</p>
+
+<h3>Étape 3 — Le taux d'intérêt via Caballero-Farhi-Gourinchas</h3>
+
+<p>Appliquons l'équation 11 au contexte de l'IA. Le développement financier « effectif » \(\delta\) mesure quelle fraction de la production peut absorber l'épargne sous forme d'actifs productifs. Quand l'épargne excédentaire monte en flèche mais que la demande (et donc les opportunités d'investissement productif) stagne, c'est comme si \(\delta\) baissait :</p>
+
+<div class="equation-block green">
+  <div class="eq-label">Équation 17 — Taux d'intérêt post-IA</div>
+  $$r_{\text{post-IA}} = g + \delta_{\text{effectif}}^{\text{post-IA}} \cdot \theta$$
+</div>
+
+<div class="numeric-box">
+  <div class="box-title">Simulation du taux d'intérêt d'équilibre</div>
+  <table>
+    <tr><th></th><th>Avant IA</th><th>Après IA</th></tr>
+    <tr><td>Croissance (\(g\))</td><td>3 %</td><td>2 % (demande affaiblie)</td></tr>
+    <tr><td>\(\delta_{\text{effectif}}\)</td><td>0.60</td><td>0.25 (car demande faible → peu de projets rentables)</td></tr>
+    <tr><td>\(\theta\)</td><td>0.05</td><td>0.05</td></tr>
+    <tr><td>\(r\)</td><td>\(0.03 + 0.60 \times 0.05 = \) <span class="highlight-green">6.0 %</span></td><td>\(0.02 + 0.25 \times 0.05 = \) <span class="highlight-result">3.25 %</span></td></tr>
+  </table>
+</div>
+
+<p>Le taux d'équilibre chute de 6 % à 3.25 %. Mais si la pénurie d'actifs sûrs est encore plus sévère (condition 13 remplie, \(\alpha > \rho\mu^-\)), le taux sûr naturel tombe <em>sous zéro</em>, et l'économie entre dans le piège à sécurité. C'est exactement le « piège à stagnation » d'Imas.</p>
+
+<h3>Étape 4 — L'épargne excédentaire se transforme en bulle via Schularick-Taylor</h3>
+
+<p>Voici le chaînon manquant dans le modèle d'Imas. L'épargne excédentaire ne reste pas tranquillement dans un coffre-fort. Les intermédiaires financiers — banques, fonds de private equity, assureurs — la prennent et la multiplient par le levier :</p>
+
+<div class="equation-block red">
+  <div class="eq-label">Équation 18 — Du surplus d'épargne à la bulle de crédit</div>
+  $$\text{Crédit spéculatif} = S_{\text{excédentaire}} \times \lambda \times \phi$$
+</div>
+
+<p>Où \(\lambda\) = ratio de levier des intermédiaires financiers (combien ils prêtent pour chaque euro de fonds propres) et \(\phi\) = fraction de l'épargne excédentaire qui passe par le système financier (plutôt que d'être thésaurisée en cash).</p>
+
+<div class="numeric-box">
+  <div class="box-title">Calcul de la bulle de crédit</div>
+  <table>
+    <tr><td>Épargne excédentaire des propriétaires</td><td>35.8 (sur un PIB de 77.1)</td></tr>
+    <tr><td>Fraction intermédiée (\(\phi\))</td><td>0.50 (estimation conservatrice)</td></tr>
+    <tr><td>Épargne intermédiée</td><td>\(35.8 \times 0.50 = 17.9\)</td></tr>
+    <tr><td>Ratio de levier (\(\lambda\))</td><td>5 (typique du private equity / shadow banking)</td></tr>
+    <tr><td><strong>Crédit spéculatif total</strong></td><td>\(17.9 \times 5 = \) <span class="highlight-result">89.5</span></td></tr>
+    <tr><td><strong>Crédit en % du PIB</strong></td><td>\(89.5 / 77.1 = \) <span class="highlight-result">116 %</span></td></tr>
+  </table>
+</div>
+
+<p>Un boom de crédit de 116 % du PIB est massif. Schularick-Taylor montrent que la croissance du crédit est le meilleur prédicteur de crise, et Jordà-Schularick-Taylor montrent que les bulles financées par le crédit produisent des pertes cumulatives de près de 29 points de PIB sur 5 ans.</p>
+
+<h3>Étape 5 — La fausse prospérité : l'effet richesse masque la faiblesse</h3>
+
+<p>Pendant la phase de bulle, les prix des actifs montent. Cela crée un <strong>effet richesse</strong> : les ménages qui possèdent des actifs (actions, immobilier) se sentent plus riches et dépensent plus, même si leurs revenus salariaux stagnent. On peut formaliser cela en ajoutant un terme à l'équation 5 :</p>
+
+<div class="equation-block red">
+  <div class="eq-label">Équation 19 — PIB apparent pendant la bulle</div>
+  $$Y_{\text{bulle}} = \frac{\kappa_0(P') + \omega \cdot \Delta V_{\text{actifs}}}{1 - \text{PMCA}(s_L')}$$
+</div>
+
+<p>Où \(\omega\) = propension marginale à consommer sur la richesse financière (estimée empiriquement entre 0.03 et 0.05 par Case, Quigley et Shiller, 2005 — c'est-à-dire que pour chaque 100 € de gain de richesse sur papier, les ménages dépensent 3 à 5 € de plus).</p>
+
+<div class="numeric-box">
+  <div class="box-title">Le PIB apparaît sain pendant la bulle</div>
+  <table>
+    <tr><td>PIB structurel (sans bulle, Étape 1)</td><td>77.1</td></tr>
+    <tr><td>Hausse des actifs (\(\Delta V\))</td><td>~150 (bulles immobilière et boursière combinées)</td></tr>
+    <tr><td>Effet richesse (\(\omega = 0.04\))</td><td>\(0.04 \times 150 = 6.0\)</td></tr>
+    <tr><td>PIB apparent</td><td>\(\frac{39 + 6.0}{0.506} = \frac{45}{0.506} = \) <span class="highlight-green">88.9</span></td></tr>
+    <tr><td>PIB apparent vs pré-IA</td><td>−11.1 % (vs −22.9 % structural)</td></tr>
+  </table>
+</div>
+
+<p>Le PIB ne baisse « que » de 11 % au lieu de 23 %. La récession semble modérée. Les politiques ne s'alarment pas. Les marchés financiers sont euphoriques. <strong>C'est exactement la situation de 1925–1929</strong> : la productivité monte, les marchés boursiers s'envolent, l'économie semble prospère — mais sous la surface, les salaires stagnent, la distribution s'aggrave, et tout repose sur une bulle de crédit.</p>
+
+<h3>Étape 6 — Le krach : la bulle éclate, le PIB réel s'effondre</h3>
+
+<p>Quand la bulle éclate (hausse des taux, défaut de crédit, repricing des valorisations IA — comme le scénario de défaut SaaS que Citrini décrit), les prix des actifs s'effondrent. L'effet richesse disparaît <em>et s'inverse</em> (les ménages paniquent et épargnent davantage). Le crédit se contracte (deleveraging). On se retrouve avec le PIB structurel affaibli <em>plus</em> les dégâts du krach :</p>
+
+<div class="equation-block red">
+  <div class="eq-label">Équation 20 — PIB après le krach</div>
+  $$Y_{\text{krach}} = \frac{\kappa_0(P') - \omega' \cdot |\Delta V_{\text{perte}}| - \Delta I_{\text{contraction}}}{1 - \text{PMCA}(s_L')}$$
+</div>
+
+<p>Où \(\omega' > \omega\) (l'effet richesse est asymétrique — les pertes réduisent la consommation <em>plus</em> que les gains ne l'augmentent ; Romer, 1990, estime ce coefficient à environ 0.06–0.10) et \(\Delta I_{\text{contraction}}\) = chute de l'investissement due au deleveraging et à la panique.</p>
+
+<div class="numeric-box">
+  <div class="box-title">L'effondrement post-krach</div>
+  <table>
+    <tr><td>Perte de valeur des actifs</td><td>−100 (sur 150 de gains; krach de ~67 %)</td></tr>
+    <tr><td>Effet richesse inversé (\(\omega' = 0.07\))</td><td>\(-0.07 \times 100 = -7.0\)</td></tr>
+    <tr><td>Contraction de l'investissement</td><td>−5.0 (credit crunch)</td></tr>
+    <tr><td>PIB post-krach</td><td>\(\frac{39 - 7.0 - 5.0}{0.506} = \frac{27}{0.506} = \) <span class="highlight-result">53.4</span></td></tr>
+    <tr><td><strong>Chute totale du PIB vs pré-IA</strong></td><td><span class="highlight-result"><strong>−46.6 %</strong></span></td></tr>
+  </table>
+</div>
+
+<div class="insight-box">
+  <div class="insight-title">Le résultat clé : −47 % du PIB — mais par un chemin différent d'Imas</div>
+  <p>On retrouve presque exactement la même chute de PIB que le scénario extrême d'Imas (−47.7 %), mais par un mécanisme totalement différent. Imas a besoin que la part du travail tombe à 0.05 (quasi-totale automatisation). Notre extension n'a besoin que d'une baisse à 0.42 — un niveau historiquement précédent (années 1920) — combinée à un cycle bulle-krach alimenté par l'épargne excédentaire. Le scénario modéré + bulle produit le même résultat catastrophique que le scénario extrême d'Imas, tout en étant beaucoup plus plausible.</p>
+</div>
+
+<h3>Résumé de la chaîne causale complète</h3>
+
+<div class="equation-block red">
+  <div class="eq-label">La séquence en 6 maillons</div>
+  <p style="line-height:2.2; font-size: 1.05rem;">
+  <strong>1.</strong> L'IA augmente la productivité et réduit \(s_L\) de 0.60 à 0.42 (Imas, Éq. 2 et 4bis)<br>
+  <strong>2.</strong> La PMCA chute de 0.62 à 0.494, le multiplicateur de 2.63 à 1.98 (Imas, Éq. 5)<br>
+  <strong>3.</strong> Les profits montent, l'épargne capitaliste atteint 46 % du PIB (Kalecki, Éq. de Kalecki)<br>
+  <strong>4.</strong> Le taux d'intérêt d'équilibre chute; pénurie d'actifs sûrs (CFG, Éq. 11–14)<br>
+  <strong>5.</strong> L'épargne se transforme en crédit spéculatif à 116 % du PIB (Éq. 18); effet richesse masque la faiblesse (Éq. 19)<br>
+  <strong>6.</strong> Le krach révèle la fragilité structurelle; PIB → −47 % (Éq. 20; Schularick-Taylor)<br>
+  </p>
+</div>
+
+<p>Cette séquence est la reproduction presque exacte de ce qui s'est passé entre 1920 et 1929 aux États-Unis. La productivité manufacturière a bondi de 5.4 % par an. Les salaires n'ont pas suivi. Le top 1 % a capté 23.9 % du revenu national. L'épargne excédentaire a alimenté des prêts sur marge (broker loans quadruplant de 1 à 4 milliards de dollars). La Bourse a explosé. Le PIB semblait sain. Puis le krach de 1929 a révélé la fragilité structurelle, et la Grande Dépression a suivi.</p>
+
+<p>L'apport de ce cadre étendu est de montrer que le scénario catastrophe ne nécessite <em>pas</em> les conditions extrêmes qu'Imas identifie comme irréalistes (satiété totale, aucun nouveau bien, aucune politique fiscale, quasi-totale automatisation). Il suffit d'une redistribution <em>modérée</em> mais soutenue des revenus vers le capital, combinée à un système financier qui transforme l'épargne excédentaire en crédit spéculatif — un mécanisme que l'état actuel des marchés de private credit, de private equity et d'assurance-vie rend tout à fait plausible.</p>
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    renderMathInElement(document.body, {
+      delimiters: [
+        {left: "$$", right: "$$", display: true},
+        {left: "\\(", right: "\\)", display: false}
+      ],
+      throwOnError: false
+    });
+  });
+</script>
+
+</body>
+</html>
